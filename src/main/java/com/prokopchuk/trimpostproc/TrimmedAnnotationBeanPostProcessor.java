@@ -21,14 +21,14 @@ public class TrimmedAnnotationBeanPostProcessor implements BeanPostProcessor {
         MethodInterceptor methodInterceptor = (object, method, args, methodProxy) -> {
             Parameter[] parameters = method.getParameters();
             for (int i = 0; i < parameters.length; i++) {
-                if (parameters[i].getType().equals(String.class)) {
+                if (parameters[i].getType().isAssignableFrom(String.class)) {
                     args[i] = args[i].toString().trim();
                 }
             }
 
             var result = methodProxy.invokeSuper(object, args);
 
-            if (method.getReturnType().equals(String.class)) {
+            if (method.getReturnType().isAssignableFrom(String.class)) {
                 return result.toString().trim();
             }
 
